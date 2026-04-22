@@ -1,0 +1,46 @@
+# fly.toml — SAHABAT.AI risk engine
+#
+# Deploy:
+#   fly launch --no-deploy --copy-config   # first time
+#   fly deploy
+#
+# Notes
+# -----
+#   - `auto_stop_machines = "stop"` keeps us on the free tier by idling the VM
+#     when there's no traffic; Fly restarts it on the next request (~2 s
+#     cold-start for this image since model.pkl is baked in).
+#   - Single shared-CPU machine with 512 MB is plenty for XGBoost inference.
+#   - Update `app` to match the name you pick in `fly launch`.
+
+app = "sahabat-risk-engine"
+primary_region = "sin"   # Singapore — closest Fly region to Malaysia
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  MODEL_VERSION = "xgb-0.1.0"
+  # Lock down once the Next.js deployment URL is known:
+  # CORS_ORIGINS = "https://sahabat-ai.vercel.app"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/healthz"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1

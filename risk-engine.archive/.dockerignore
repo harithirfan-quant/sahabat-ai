@@ -1,0 +1,22 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.venv
+venv
+env
+.env
+.env.*
+.pytest_cache
+.mypy_cache
+.ruff_cache
+*.log
+
+# Never ship a stale model.pkl from a dev box — the image builds its own.
+model.pkl
+metrics.json
+
+# Editor / OS cruft
+.vscode
+.idea
+.DS_Store
