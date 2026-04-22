@@ -13,6 +13,7 @@ type DictionaryShape = {
     heroSubtitle: string;
     tryDemo: string;
     seeFeatures: string;
+    problemStat: string;
     problemTitle: string;
     problemBody: string;
     featuresTitle: string;
@@ -76,11 +77,12 @@ export const dictionary: Record<Locale, DictionaryShape> = {
     },
     landing: {
       heroBadge: "For Malaysian youth · ICYOUTH 2026 · UPM",
-      heroTitle: "Sahabat yang mendengar.",
+      heroTitle: "A friend who listens.",
       heroSubtitle:
         "Your AI friend. Always listening. Always connecting you to the help you deserve.",
       tryDemo: "Mula sekarang — it's free",
       seeFeatures: "See how it works",
+      problemStat: "1 in 3",
       problemTitle: "1 in 3 Malaysian youth report mental distress.",
       problemBody:
         "NHMS 2022 shows a quiet crisis. Existing services are reactive, fragmented, and rarely in the languages our youth actually speak. SAHABAT.AI was built to change that — prevent, support, reconnect.",
@@ -196,6 +198,7 @@ export const dictionary: Record<Locale, DictionaryShape> = {
         "Kawan AI kamu. Sentiasa mendengar. Sentiasa menghubungkan kamu dengan bantuan yang kamu layak.",
       tryDemo: "Mula sekarang — percuma",
       seeFeatures: "Lihat cara ia bekerja",
+      problemStat: "1 dari 3",
       problemTitle: "1 daripada 3 belia Malaysia mengalami tekanan mental.",
       problemBody:
         "NHMS 2022 menunjukkan krisis senyap. Perkhidmatan sedia ada reaktif, terpecah, dan jarang dalam bahasa belia kita. SAHABAT.AI dibina untuk mengubahnya — cegah, sokong, sambung semula.",

@@ -127,8 +127,8 @@ export default function LandingPage() {
             <Card className="rounded-2xl border-none bg-secondary/70 soft-shadow">
               <CardContent className="p-8 md:p-12 grid md:grid-cols-5 gap-6 items-center">
                 <div className="md:col-span-2">
-                  <div className="text-5xl md:text-6xl font-semibold tracking-tight text-primary">
-                    1 in 3
+                  <div className="font-display text-5xl md:text-6xl font-medium tracking-tight text-primary">
+                    {t.landing.problemStat}
                   </div>
                   <div className="mt-2 text-sm text-muted-foreground">
                     NHMS 2022 · Institute for Public Health, Malaysia

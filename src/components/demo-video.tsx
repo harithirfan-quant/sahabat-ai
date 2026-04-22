@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 import { useLocale } from "@/components/locale-provider";
@@ -25,7 +26,7 @@ export function DemoVideo({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="relative w-full overflow-hidden rounded-2xl border border-border/60 soft-shadow-lg bg-gradient-to-br from-indigo-100 via-white to-emerald-50 aspect-video"
+      className="relative w-full overflow-hidden rounded-2xl border border-border/60 soft-shadow-lg gradient-hero aspect-video"
     >
       {videoSrc ? (
         <video
@@ -35,19 +36,28 @@ export function DemoVideo({
           className="h-full w-full object-cover"
         />
       ) : (
-        <div className="absolute inset-0 grid place-items-center">
+        <Link
+          href="/demo"
+          aria-label={
+            locale === "bm"
+              ? "Mula walkthrough SAHABAT.AI"
+              : "Start SAHABAT.AI walkthrough"
+          }
+          className="absolute inset-0 grid place-items-center group"
+        >
           <div className="text-center space-y-4">
-            <motion.button
-              type="button"
-              aria-label="Play demo video"
+            <motion.span
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.96 }}
-              className="grid size-20 md:size-24 place-items-center rounded-full bg-primary text-primary-foreground soft-shadow-lg hover:bg-primary/90 transition"
+              className="grid size-20 md:size-24 place-items-center rounded-full bg-primary text-primary-foreground soft-shadow-lg group-hover:bg-[color:var(--primary-hover)] transition"
             >
-              <Play className="size-8 md:size-10 translate-x-0.5" fill="currentColor" />
-            </motion.button>
+              <Play
+                className="size-8 md:size-10 translate-x-0.5"
+                fill="currentColor"
+              />
+            </motion.span>
             <div>
-              <div className="text-lg md:text-xl font-semibold tracking-tight">
+              <div className="font-display text-lg md:text-xl font-medium tracking-tight">
                 {locale === "bm"
                   ? "2-minit walkthrough SAHABAT.AI"
                   : "2-minute SAHABAT.AI walkthrough"}
@@ -59,7 +69,7 @@ export function DemoVideo({
               </div>
             </div>
           </div>
-        </div>
+        </Link>
       )}
 
       {/* Glossy overlay dots */}
