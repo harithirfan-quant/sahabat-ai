@@ -79,8 +79,17 @@ function recommendFromMessages(messages: Message[]) {
   );
 }
 
+// Distinct BM markers — function words that virtually never appear in English.
+// If we see any, we treat the message as BM for placeholder purposes.
+const BM_MARKERS =
+  /\b(saya|aku|tak|tidak|yang|apa|boleh|tidur|malam|pagi|rasa|lah|nak|hendak|macam|sudah|belum|dah|sangat|banyak|sikit|kecik|besar|kita|kami|mereka|dia|untuk|dari|pada|dengan|juga|kalau|tetapi|atau|bila|kenapa|mengapa|sekarang|hari|bermain|fikiran|anda|awak|terasa|tertekan|sunyi|sedih|gembira|suka|benci|cinta|rindu|keluarga|kawan|rakan|sekolah|universiti|kerja)\b/i;
+
+function detectInputLang(text: string): "en" | "bm" {
+  return BM_MARKERS.test(text) ? "bm" : "en";
+}
+
 export default function ChatPage() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const suggestions = useMemo(
     () => [
       "I'm feeling stressed about exams",
@@ -114,6 +123,21 @@ export default function ChatPage() {
   }, [messages]);
 
   const recommended = useMemo(() => recommendFromMessages(messages), [messages]);
+
+  // Placeholder follows the language of what the user is currently typing, then
+  // the language of their most recent sent message, then the locale toggle.
+  // This way the textarea hint never contradicts the user's own words.
+  const placeholderLang = useMemo<"en" | "bm">(() => {
+    if (input.trim().length >= 3) return detectInputLang(input);
+    const lastUser = [...messages].reverse().find((m) => m.role === "user");
+    if (lastUser) return detectInputLang(lastUser.content);
+    return locale;
+  }, [input, messages, locale]);
+
+  const placeholder =
+    placeholderLang === "bm"
+      ? "Apa yang bermain di fikiran anda hari ini?"
+      : "What's on your mind today?";
 
   const send = async (raw: string) => {
     const text = raw.trim();
@@ -316,7 +340,7 @@ export default function ChatPage() {
                 <Textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={t.chat.placeholder}
+                  placeholder={placeholder}
                   rows={2}
                   disabled={streaming}
                   className="resize-none rounded-2xl"
