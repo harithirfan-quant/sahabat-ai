@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import {
   Send,
   Sparkles,
@@ -361,6 +362,34 @@ export default function ChatPage() {
                   <span className="sr-only">{t.chat.send}</span>
                 </Button>
               </form>
+
+              {/* AI honesty line + link to Crisis Policy. Kept short so it
+                  doesn't feel like a lawyer shout. */}
+              <p className="text-[11px] leading-relaxed text-muted-foreground">
+                {locale === "bm" ? (
+                  <>
+                    Sahabat adalah AI, bukan ahli terapi. Mesej anda melalui
+                    Groq untuk menjana jawapan.{" "}
+                    <Link
+                      href="/legal/crisis-policy"
+                      className="underline underline-offset-2 hover:text-primary"
+                    >
+                      Apa yang berlaku kepada mesej saya?
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    Sahabat is an AI companion, not a therapist. Your message
+                    passes through Groq to generate a reply.{" "}
+                    <Link
+                      href="/legal/crisis-policy"
+                      className="underline underline-offset-2 hover:text-primary"
+                    >
+                      What happens to my message?
+                    </Link>
+                  </>
+                )}
+              </p>
             </div>
           </CardContent>
         </Card>

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { PhoneCall, LifeBuoy, AlertCircle } from "lucide-react";
 import { useLocale } from "@/components/locale-provider";
 
@@ -77,6 +78,34 @@ export function CrisisBanner({ compact = false }: { compact?: boolean }) {
             </div>
           </a>
         </div>
+
+        {!compact && (
+          <p className="text-[11px] leading-relaxed text-red-800/80">
+            {locale === "bm" ? (
+              <>
+                Bagaimana Sahabat mengendalikan mesej krisis?{" "}
+                <Link
+                  href="/legal/crisis-policy"
+                  className="underline underline-offset-2 font-medium hover:text-red-900"
+                >
+                  Baca Polisi Krisis kami
+                </Link>
+                .
+              </>
+            ) : (
+              <>
+                How does Sahabat handle a crisis message?{" "}
+                <Link
+                  href="/legal/crisis-policy"
+                  className="underline underline-offset-2 font-medium hover:text-red-900"
+                >
+                  Read our Crisis Policy
+                </Link>
+                .
+              </>
+            )}
+          </p>
+        )}
       </div>
     </div>
   );

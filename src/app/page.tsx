@@ -52,7 +52,7 @@ const fadeUp: Variants = {
 };
 
 export default function LandingPage() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   return (
     <>
@@ -289,11 +289,39 @@ export default function LandingPage() {
         </section>
 
         <footer className="border-t border-border">
-          <div className="mx-auto max-w-6xl px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-2 text-sm text-muted-foreground">
-            <span>
-              © {new Date().getFullYear()} SAHABAT.AI · ICYOUTH 2026 · UPM
-            </span>
-            <span>Built with Claude, Supabase, and Next.js.</span>
+          <div className="mx-auto max-w-6xl px-4 py-8 flex flex-col gap-4 text-sm text-muted-foreground">
+            <nav className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2">
+              <Link
+                href="/legal/privacy"
+                className="hover:text-primary transition"
+              >
+                {locale === "bm" ? "Polisi Privasi" : "Privacy"}
+              </Link>
+              <Link
+                href="/legal/terms"
+                className="hover:text-primary transition"
+              >
+                {locale === "bm" ? "Terma" : "Terms"}
+              </Link>
+              <Link
+                href="/legal/pdpa-notice"
+                className="hover:text-primary transition"
+              >
+                {locale === "bm" ? "Notis PDPA" : "PDPA Notice"}
+              </Link>
+              <Link
+                href="/legal/crisis-policy"
+                className="hover:text-primary transition"
+              >
+                {locale === "bm" ? "Polisi Krisis" : "Crisis Policy"}
+              </Link>
+            </nav>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-2">
+              <span>
+                © {new Date().getFullYear()} SAHABAT.AI · ICYOUTH 2026 · UPM
+              </span>
+              <span>Built with Claude, Supabase, and Next.js.</span>
+            </div>
           </div>
         </footer>
       </main>

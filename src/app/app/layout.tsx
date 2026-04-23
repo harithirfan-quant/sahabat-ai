@@ -1,4 +1,5 @@
 import { AppBottomBar, AppTopBar } from "@/components/app-nav";
+import { AppLegalFooter } from "@/components/app-legal-footer";
 
 export default function AppShellLayout({
   children,
@@ -10,6 +11,7 @@ export default function AppShellLayout({
       <AppTopBar />
       <main className="flex-1 mx-auto w-full max-w-6xl px-4 py-6 pb-28 md:pb-10">
         {children}
+        <AppLegalFooter />
       </main>
       <AppBottomBar />
     </div>

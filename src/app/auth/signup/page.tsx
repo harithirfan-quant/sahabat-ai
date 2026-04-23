@@ -22,6 +22,8 @@ export default function SignupPage() {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [ageOk, setAgeOk] = useState(false);
+  const [consentOk, setConsentOk] = useState(false);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -33,6 +35,19 @@ export default function SignupPage() {
     const handle = String(form.get("handle") ?? "").trim();
 
     if (!email || !password) return;
+
+    // Hard gate — never hit Supabase without both boxes ticked. The PDPA
+    // notice + privacy policy explicitly rely on "explicit consent" as the
+    // lawful basis; collecting sensitive personal data before that tick
+    // would be unlawful under s.40 PDPA 2010.
+    if (!ageOk || !consentOk) {
+      setError(
+        locale === "bm"
+          ? "Sila tandakan kedua-dua kotak sebelum mendaftar."
+          : "Please tick both boxes before signing up.",
+      );
+      return;
+    }
 
     setSubmitting(true);
     setError(null);
@@ -46,6 +61,9 @@ export default function SignupPage() {
           data: {
             handle: handle || null,
             language_pref: locale,
+            pdpa_consent_at: new Date().toISOString(),
+            pdpa_consent_version: "2026-04-24",
+            age_confirmed_15_plus: true,
           },
         },
       });
@@ -120,6 +138,104 @@ export default function SignupPage() {
               disabled={submitting}
             />
           </div>
+          {/* PDPA consent gate — both boxes are required. */}
+          <div className="space-y-3 rounded-2xl border border-border/60 bg-muted/40 p-4 text-sm">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={ageOk}
+                onChange={(e) => setAgeOk(e.target.checked)}
+                className="mt-0.5 size-4 rounded border-border accent-[color:var(--primary)]"
+                disabled={submitting}
+              />
+              <span className="leading-relaxed text-foreground/90">
+                {locale === "bm" ? (
+                  <>
+                    Saya berumur <strong>15 tahun ke atas</strong>. Jika saya
+                    bawah 18, ibu bapa atau penjaga saya telah menyemak
+                    polisi ini bersama saya.
+                  </>
+                ) : (
+                  <>
+                    I am <strong>15 years of age or older</strong>. If I am
+                    under 18, a parent or guardian has reviewed these
+                    policies with me.
+                  </>
+                )}
+              </span>
+            </label>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={consentOk}
+                onChange={(e) => setConsentOk(e.target.checked)}
+                className="mt-0.5 size-4 rounded border-border accent-[color:var(--primary)]"
+                disabled={submitting}
+              />
+              <span className="leading-relaxed text-foreground/90">
+                {locale === "bm" ? (
+                  <>
+                    Saya bersetuju dengan{" "}
+                    <Link
+                      href="/legal/terms"
+                      target="_blank"
+                      className="text-primary underline underline-offset-2"
+                    >
+                      Terma Perkhidmatan
+                    </Link>
+                    ,{" "}
+                    <Link
+                      href="/legal/privacy"
+                      target="_blank"
+                      className="text-primary underline underline-offset-2"
+                    >
+                      Polisi Privasi
+                    </Link>
+                    , dan{" "}
+                    <Link
+                      href="/legal/pdpa-notice"
+                      target="_blank"
+                      className="text-primary underline underline-offset-2"
+                    >
+                      Notis PDPA
+                    </Link>
+                    . Saya memberi kebenaran nyata untuk memproses data
+                    kesihatan mental sensitif saya.
+                  </>
+                ) : (
+                  <>
+                    I agree to the{" "}
+                    <Link
+                      href="/legal/terms"
+                      target="_blank"
+                      className="text-primary underline underline-offset-2"
+                    >
+                      Terms of Service
+                    </Link>
+                    ,{" "}
+                    <Link
+                      href="/legal/privacy"
+                      target="_blank"
+                      className="text-primary underline underline-offset-2"
+                    >
+                      Privacy Policy
+                    </Link>
+                    , and{" "}
+                    <Link
+                      href="/legal/pdpa-notice"
+                      target="_blank"
+                      className="text-primary underline underline-offset-2"
+                    >
+                      PDPA Notice
+                    </Link>
+                    . I give explicit consent to process my sensitive
+                    mental-health data.
+                  </>
+                )}
+              </span>
+            </label>
+          </div>
+
           {error && (
             <div className="rounded-2xl border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive">
               {error}
@@ -128,7 +244,7 @@ export default function SignupPage() {
           <Button
             type="submit"
             className="w-full rounded-full h-11 gap-2"
-            disabled={submitting}
+            disabled={submitting || !ageOk || !consentOk}
           >
             {submitting && <Loader2 className="size-4 animate-spin" />}
             {t.auth.signup}
