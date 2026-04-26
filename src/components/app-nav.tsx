@@ -12,6 +12,7 @@ import {
 import { useLocale } from "@/components/locale-provider";
 import { BrandMark } from "@/components/brand-mark";
 import { LocaleToggle } from "@/components/locale-toggle";
+import { UserMenu } from "@/components/user-menu";
 
 type Item = {
   href: string;
@@ -55,6 +56,7 @@ export function AppTopBar() {
         </nav>
         <div className="ml-auto flex items-center gap-2">
           <LocaleToggle />
+          <UserMenu />
         </div>
       </div>
     </header>
