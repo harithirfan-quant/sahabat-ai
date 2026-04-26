@@ -23,7 +23,7 @@ import { useLocale } from "@/components/locale-provider";
 type NodeKind =
   | "input"
   | "safety"
-  | "claude"
+  | "companion"
   | "risk"
   | "recommender"
   | "output";
@@ -49,18 +49,24 @@ const NODES: NodeDef[] = [
   {
     key: "safety",
     label: { en: "Safety classifier", bm: "Pengelas keselamatan" },
-    sub: { en: "Regex → Haiku JSON", bm: "Regex → Haiku JSON" },
+    sub: {
+      en: "Regex → Llama 3.1 8B JSON",
+      bm: "Regex → Llama 3.1 8B JSON",
+    },
     icon: ShieldAlert,
-    tint: "bg-red-50 border-red-200",
-    iconTint: "bg-red-100 text-red-600",
+    tint: "bg-[color:var(--destructive)]/5 border-[color:var(--destructive)]/25",
+    iconTint: "bg-[color:var(--destructive)]/10 text-[color:var(--destructive)]",
   },
   {
-    key: "claude",
-    label: { en: "Claude Haiku 4.5", bm: "Claude Haiku 4.5" },
-    sub: { en: "Empathetic stream", bm: "Aliran empati" },
+    key: "companion",
+    label: { en: "Llama 3.3 70B", bm: "Llama 3.3 70B" },
+    sub: {
+      en: "Groq · empathetic stream",
+      bm: "Groq · aliran empati",
+    },
     icon: Sparkles,
-    tint: "bg-indigo-50 border-indigo-200",
-    iconTint: "bg-indigo-100 text-indigo-600",
+    tint: "bg-secondary border-border",
+    iconTint: "bg-primary/10 text-primary",
   },
   {
     key: "risk",
@@ -70,16 +76,16 @@ const NODES: NodeDef[] = [
       bm: "Pemarkahan kesejahteraan berwajaran (selaras PHQ-9/GAD-7)",
     },
     icon: Activity,
-    tint: "bg-amber-50 border-amber-200",
-    iconTint: "bg-amber-100 text-amber-700",
+    tint: "bg-[color:var(--accent)]/10 border-[color:var(--accent)]/25",
+    iconTint: "bg-[color:var(--accent)]/15 text-[color:var(--accent-hover)]",
   },
   {
     key: "recommender",
     label: { en: "Recommender", bm: "Pencadang" },
     sub: { en: "pgvector cosine", bm: "pgvector kosinus" },
     icon: Compass,
-    tint: "bg-emerald-50 border-emerald-200",
-    iconTint: "bg-emerald-100 text-emerald-700",
+    tint: "bg-[color:var(--tier-green)]/8 border-[color:var(--tier-green)]/30",
+    iconTint: "bg-[color:var(--tier-green)]/15 text-[color:var(--primary-hover)]",
   },
   {
     key: "output",
@@ -142,7 +148,7 @@ export function ArchitectureDiagram() {
 
       <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
         <span className="inline-flex items-center gap-1.5">
-          <span className="inline-block size-2 rounded-full bg-red-500" />
+          <span className="inline-block size-2 rounded-full bg-[color:var(--destructive)]" />
           {locale === "bm" ? "Aliran krisis" : "Crisis path"}
         </span>
         <span className="inline-flex items-center gap-1.5">
